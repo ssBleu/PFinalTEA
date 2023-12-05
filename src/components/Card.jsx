@@ -11,7 +11,7 @@ import question from '../Assets/PokeImgs/QuestionCard.png';
 import SoundSucces from '../Assets/sounds/success.mp3';
 import Button from "react-bootstrap/Button";
 
-
+//Función para mezclar un array
 const shuffleArray = (array) => {
     const newArray = array.slice();
     for (let i = newArray.length - 1; i > 0; i--) {
@@ -21,19 +21,24 @@ const shuffleArray = (array) => {
     return newArray;
 };
 
+
+//Función para generar las cartas del juego
 const generateCards = () => {
     const cardValues = [poke1, poke2, poke3, poke4, poke5, poke6, poke7, poke8];
     const cards = [...cardValues, ...cardValues]; // Creando pares
     return shuffleArray(cards);
 };
 
+//Componente Memory Game
 const MemoryGame = () => { //
     const [audio] = useState(new Audio(SoundSucces));
-
+    
+    //Estados para las cartas, índices volteados y pares coincidentes
     const [cards, setCards] = useState(generateCards());
     const [flippedIndices, setFlippedIndices] = useState([]);
     const [matchedPairs, setMatchedPairs] = useState([]);
 
+    //se ejecutara al darle clic a las cartas (mandando como parametro su indice)
     const handleCardClick = (index) => {
         if (flippedIndices.length === 2 || flippedIndices.includes(index) || matchedPairs.includes(cards[index])) {
             return; // Para que no se pueda cliquear los ya flipeados
@@ -42,29 +47,32 @@ const MemoryGame = () => { //
         setFlippedIndices((prevFlippedIndices) => [...prevFlippedIndices, index]);
 
         if (flippedIndices.length === 1) {
-            // un pequeño delay
+            // un pequeño delay antes de verificar coincidencia
             setTimeout(() => checkForMatch(index), 1000);
         }
     };
-
+    
+    //Verificar si hay coincidencia entre las cartas volteadas
     const checkForMatch = (index) => {
         const firstCard = cards[flippedIndices[0]];
         const secondCard = cards[index];
 
         if (firstCard === secondCard) {
             setMatchedPairs((prevMatchedPairs) => [...prevMatchedPairs, firstCard]);
-            audio.play();
+            audio.play();// Reproducir sonido de éxito
         }
 
         setFlippedIndices([]);
     };
 
+    // Reiniciar el juego
     const resetGame = () => {
         setCards(generateCards());
         setFlippedIndices([]);
         setMatchedPairs([]);
     };
-
+    
+    //Efecto secundario para verificar si se han encontrado todos los pares
     useEffect(() => {
         if (matchedPairs.length === cards.length / 2) {
             audio.play();
