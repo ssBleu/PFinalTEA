@@ -2,8 +2,10 @@ import { useState } from "react";
 import { BiMoon, BiSun } from "react-icons/bi";
 
 const DarkModeBtn = () => {
+    //Estado para almacenar el tema actual (dark o light)
     const [theme, setTheme] = useState("dark");
 
+    // Función para alternar entre modos de tema
     const toggleTheme = () => {
         const newTheme = theme === "dark" ? "light" : "dark";
         setTheme(newTheme);
@@ -11,8 +13,8 @@ const DarkModeBtn = () => {
 
         // Cambiar el atributo data-theme en la etiqueta HTML 
         document.documentElement.setAttribute("data-theme", newTheme);
-
     };
+    //renderizado
     return (
         <>
             <button className="btn-theme"
