@@ -1,0 +1,18 @@
+:root[data-theme="dark"] {
+  --body-gradient-1: rgba(24, 4, 60);
+  --body-gradient-2: rgba(8, 4, 20);
+}
+
+:root[data-theme="light"] {
+  --body-gradient-1: rgba(80, 13, 249, 0.904);
+  --body-gradient-2: rgba(63, 3, 215, 0.904);
+
+}
+
+body {
+  margin: 0;
+  font-family: "Raleway", serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-image: linear-gradient(to left, var(--body-gradient-1), var(--body-gradient-2));
+}
