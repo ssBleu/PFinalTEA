@@ -11,39 +11,47 @@ import Button from "react-bootstrap/Button";
 const InteractiveImage = () => {
 
     const [audio] = useState(new Audio(SoundSucces));
-
+    
+    // Estados para manejar las áreas interactuadas, el índice de la imagen actual, las notificaciones de éxito y el estado general de éxito
     const [interactedAreas, setInteractedAreas] = useState(new Set());
     const [imageIndex, setImageIndex] = useState(0);
     const [successNotifications, setSuccessNotifications] = useState([]);
     const [isInteractionSuccessful, setInteractionSuccessful] = useState(false);
 
+    // Definición de las imágenes y sus áreas interactivas
     const images = [
         { src: Img1, areas: [{ id: 1, coords: '90,230,165,300' }, { id: 2, coords: '165,322,265,400' }, { id: 3, coords: '480,200,540,252' }, { id: 4, coords: '660,211,720,262' }] },
         { src: Img2, areas: [{ id: 1, coords: '360,210,420,272' }, { id: 2, coords: '455,135,550,220' }] },
         { src: Img3, areas: [{ id: 1, coords: '450,120,548,180' }, { id: 2, coords: '630,140,700,185' }] },
     ];
 
+    // Efecto secundario para manejar el cambio de estado y detectar si todas las interacciones han sido identificadas con éxito
     useEffect(() => {
         if (successNotifications.length === images[imageIndex].areas.length) {
+            // Si todas las interacciones han sido identificadas, avanzar a la siguiente imagen
             if (imageIndex < images.length - 1) {
                 setImageIndex((prevIndex) => prevIndex + 1);
                 setSuccessNotifications([]);
                 setInteractedAreas(new Set()); // Reinicia el conjunto de áreas interactuadas para la nueva imagen
             } else {
+                // Si se han completado todas las imágenes, establecer el estado general de éxito
                 setInteractionSuccessful(true);
             }
             audio.play();
         }
     }, [successNotifications, imageIndex, audio, images]);
 
+    // Función para manejar la interacción del usuario con una determinada área
     const handleInteraction = (areaId) => {
         if (interactedAreas.has(areaId)) {
-            return;
+            return; //si ya interactuó no hacer nada
         }
+        // Mensajes interactivos para mostrar una notificación de éxito
         setSuccessNotifications((prevNotifications) => [...prevNotifications, `¡Encontraste la interacción ${areaId}!`]);
         setInteractedAreas((prevInteractedAreas) => new Set(prevInteractedAreas).add(areaId));
     };
 
+    //reinicio
     const handleReset = () => {
         setImageIndex(0);
         setSuccessNotifications([]);
